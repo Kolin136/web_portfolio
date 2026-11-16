@@ -127,7 +127,29 @@
 
   header.hero { padding: 64px 0 8px; }
   .hero h1 { font-size: clamp(32px, 6vw, 44px); line-height: 1.25; margin: 0; letter-spacing: -0.02em; }
-  .hero h1 span { color: var(--muted); font-weight: 500; font-size: 0.55em; margin-left: 6px; }
+  .hero h1 span { color: var(--muted); font-weight: 500; font-size: 0.55em; margin: 0 6px; }
+
+  /* ---------- profile ---------- */
+  .profile {
+    display: flex; gap: 28px; align-items: flex-start;
+    margin-top: 28px; padding: 24px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+  }
+  .profile-photo {
+    flex: none; width: 160px; aspect-ratio: 3 / 4; object-fit: cover;
+    border-radius: 10px; border: 1px solid var(--line);
+  }
+  .profile-info { flex: 1; min-width: 0; margin: 0; display: grid; gap: 12px; font-size: 15px; }
+  .profile-info > div { display: grid; grid-template-columns: 96px 1fr; gap: 12px; }
+  .profile-info dt { font-weight: 700; color: var(--muted); }
+  .profile-info dd { margin: 0; }
+  .profile-info dd ul { margin: 0; padding-left: 18px; }
+  .profile-info a { color: var(--accent); text-decoration: none; }
+  .profile-info a:hover { text-decoration: underline; }
+
+  .fig-pair { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 18px; }
+  .fig-pair figure { margin: 0; }
+  .fig-pair figcaption { text-align: center; font-weight: 600; }
 
   /* ---------- project ---------- */
   section.project { padding-top: 88px; }
@@ -230,7 +252,10 @@
     .project-head { padding: 22px 20px; }
     section.project { padding-top: 64px; }
     .overview { padding: 18px; }
-    .metric tr { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; padding: 4px 0; }
+    .profile { flex-direction: column; align-items: center; padding: 20px 18px; }
+    .profile-photo { width: 140px; }
+    .profile-info { width: 100%; }
+    .profile-info > div { grid-template-columns: 1fr; gap: 2px; }    .metric tr { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; padding: 4px 0; }
     .metric td.name { grid-column: 1 / -1; width: auto; padding-bottom: 2px; }
     .metric td.bar, .metric td.val { width: auto; }
   }
@@ -246,8 +271,8 @@
 <nav>
   <div class="nav-wrap">
     <div class="nav-inner">
-      <a href="#rag">RAG 챗봇</a>
       <a href="#work">실무 경력</a>
+      <a href="#rag">RAG 챗봇</a>
       <a href="#shortsgen">쇼츠젠</a>
       <a href="#journee">Journee – AI</a>
     </div>
@@ -267,171 +292,25 @@
 <main>
 
   <header class="hero">
-    <h1>최재석<span>Choi JaeSeok</span> 포트폴리오</h1>
+    <h1>최재석<span>Choi JaeSeok</span> 이력서 · 포트폴리오</h1>
+    <div class="profile">
+      <img class="profile-photo" src="seok.jpg" alt="최재석 프로필 사진">
+      <dl class="profile-info">
+        <div><dt>Email</dt><dd><a href="mailto:jsowb136@gmail.com">jsowb136@gmail.com</a></dd></div>        <div><dt>Education</dt><dd>
+          <ul>
+            <li>방송통신대학교 컴퓨터과학과 (23.01 ~ 27.01 졸업예정)</li>
+            <li>내일배움캠프 백엔드 Spring 3기 (23.09 ~ 24.01)</li>
+          </ul>
+        </dd></div>
+        <div><dt>Experience</dt><dd>
+          <ul>
+            <li>프리랜서 · 공연예술 예약 및 굿즈 판매 서비스 관리자 페이지 개발 (24.06 ~ 24.09)</li>
+            <li>클비 시스템(정규직) Java 백엔드 개발 (25.08 ~ 26.04)</li>
+          </ul>
+        </dd></div>
+      </dl>
+    </div>
   </header>
-
-  <!-- ================= RAG ================= -->
-  <section class="project" id="rag">
-    <div class="project-head">
-      <span class="tag">Side Project</span>
-      <h2>PDF 기반 RAG 챗봇 구축<br>(청킹·검색 전략 점진적 고도화)</h2>
-      <p class="meta">2026.05 ~ 2026.07 · <a href="https://github.com/Kolin136/Chatbot" target="_blank" rel="noopener">github.com/Kolin136/Chatbot</a></p>
-    </div>
-
-    <div class="overview">
-      <h4>[소개]</h4>
-      <p>PDF 문서를 업로드하면 문서의 구조적 특성에 맞는 (청킹 → 벡터DB 저장 → 검색) 전략 조합을 적용해 답변하는 100% 로컬 RAG 파이프라인</p>
-      <h4>[주 기술 스택]</h4>
-      <ul class="chips">
-        <li>LM Studio</li><li>ChromaDB</li><li>FastAPI</li><li>Docling</li><li>LangChain</li><li>pydantic_ai</li>
-      </ul>
-      <h4>[도입 배경]</h4>
-      <ul>
-        <li>범용 LLM의 특정 도메인 지식 부족 문제와, 외부 API 호출 비용 상황 → LM Studio 기반 로컬 추론으로 문서가 외부로 전송되지 않는 구조를 자력 구축</li>
-        <li>단일 전략(고정 크기 청킹 + 임베딩 검색)으로는 문서 종류에 따라 검색 정확도 편차가 크다는 점을 확인, 문서 형태별로 전략을 조합·선택할 수 있는 구조를 목표로 설계</li>
-      </ul>
-      <h4>[기능 흐름]</h4>
-      <ol>
-        <li>PDF 업로드 → Docling 파싱 (텍스트 / 표 / 이미지 분리)</li>
-        <li>표·이미지는 멀티모달 LLM으로 텍스트 설명문 변환 후 본문 청크에 결합</li>
-        <li>문서 시각 구조 분석 → 청킹 전략 선택 (구조형 → Hybrid / 서술형 → Semantic)</li>
-        <li>청크 결과 임베딩 후 ChromaDB 저장</li>
-        <li>질의 시 하이브리드(Dense + Sparse) 검색 → RRF 순위 융합 → 원본 텍스트로 답변 생성</li>
-      </ol>
-    </div>
-
-    <article class="feature">
-      <h3><span class="num">1</span>청킹, 임베딩 시 문서 내 시각 요소(표·이미지) 유실 문제 해결</h3>
-      <div class="block">
-        <p class="label">[문제 상황]</p>
-        <ul><li>문서의 표와 이미지가 포함된 경우 청킹 단계에서 통째로 누락 후 임베딩 대상에서 제외되는 문제 발생</li></ul>
-      </div>
-      <div class="block">
-        <p class="label">[해결 과정]</p>
-        <ul>
-          <li>Docling으로 PDF를 파싱해 텍스트, 표, 이미지 등을 구조적으로 분리하고, 시각 요소를 별도 객체로 추출</li>
-          <li>추출한 시각 요소를 멀티모달 LLM을 통해 텍스트 설명문으로 변환한 뒤, 문서 내 원래 위치에 치환하고 그 상태에서 청킹을 수행하여 주변 본문 문맥과 함께 하나의 검색 단위로 인덱싱</li>
-        </ul>
-      </div>
-      <div class="block result">
-        <p class="label">[성과]</p>
-        <ul>
-          <li>표·다이어그램에만 존재했던 정보가 텍스트 검색 경로로 편입되어, 기존에는 근거 부재로 답변 불가 발생</li>
-          <li>표·이미지에 근거가 있는 질의 기준 RAGAS(RAG 평가 시스템) 4개 지표 전부 향상</li>
-        </ul>
-        <p class="metric-title">RAGAS 지표 <span class="hl">(평균 33%p 향상)</span></p>
-        <table class="metric">
-          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:68%"></i><i class="before" style="width:25%"></i></div></td><td class="val">25% → 68%<b>+43%p</b></td></tr>
-          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:63%"></i><i class="before" style="width:35%"></i></div></td><td class="val">35% → 63%<b>+28%p</b></td></tr>
-          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:82%"></i><i class="before" style="width:51%"></i></div></td><td class="val">51% → 82%<b>+32%p</b></td></tr>
-          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:51%"></i><i class="before" style="width:21%"></i></div></td><td class="val">21% → 51%<b>+30%p</b></td></tr>
-        </table>
-        <div class="legend"><span class="b">Before</span><span class="a">After</span></div>
-      </div>
-    </article>
-
-    <article class="feature">
-      <h3><span class="num">2</span>청킹 전략 고도화: 고정 크기 → 구조 기반 → 의미 기반</h3>
-      <div class="block">
-        <p class="label">[문제 상황]</p>
-        <ul><li>고정 크기 청킹은 토큰 수만 기준으로 자르기 때문에 문단·문장 중간에서 문맥이 단절되고, 질문과 관련된 내용이 두 청크에 걸쳐 쪼개져 검색 정확도가 떨어지는 현상 발생</li></ul>
-      </div>
-      <div class="block">
-        <p class="label">[1차 적용: Docling HybridChunker]</p>
-        <ul>
-          <li>Docling이 제공하는 HybridChunker를 적용해, 헤딩·단락 구조를 그대로 보존한 채 임베딩 모델의 토크나이저 기준 최대 토큰 수에 맞춰 청크를 병합·분할하도록 구성</li>
-          <li>청크 경계를 문서에 이미 존재하는 헤딩·문단 구분선에 맞춰, 문단 중간이 아닌 구조적 경계 지점에서만 청크가 나뉘도록 설계</li>
-        </ul>
-      </div>
-      <div class="block">
-        <p class="label">[한계 인지]</p>
-        <ul><li>헤딩·목차 구조가 없는 논문 같은 자유 서술형 문서는 참조할 경계 정보가 없어, 하이브리드 청킹이 사실상 고정 크기 청킹과 동일하게 동작</li></ul>
-      </div>
-      <div class="block">
-        <p class="label">[2차 적용: LangChain SemanticChunker]</p>
-        <ul>
-          <li>LangChain이 제공하는 SemanticChunker를 적용해, 인접 문장 간 임베딩 유사도가 급격히 떨어지는 지점을 의미 경계로 판단해 자동 분할하도록 설정</li>
-          <li>구조 정보 없이 내용만으로 경계를 찾으므로 서술형 문서에 적용 가능</li>
-        </ul>
-      </div>
-      <div class="block result">
-        <p class="label">[성과]</p>
-        <p class="metric-title">구조형 문서: 고정 크기 → 하이브리드 청킹 <span class="hl">(평균 10%p 향상)</span></p>
-        <table class="metric">
-          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:68%"></i><i class="before" style="width:50%"></i></div></td><td class="val">50% → 68%<b>+18%p</b></td></tr>
-          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:62%"></i><i class="before" style="width:62%"></i></div></td><td class="val">62% → 62%<b>+0%p</b></td></tr>
-          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:82%"></i><i class="before" style="width:70%"></i></div></td><td class="val">70% → 82%<b>+12%p</b></td></tr>
-          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:51%"></i><i class="before" style="width:41%"></i></div></td><td class="val">41% → 51%<b>+10%p</b></td></tr>
-        </table>
-        <p class="metric-title">서술형 문서: 하이브리드 → 시멘틱 청킹 <span class="hl">(평균 11%p 향상)</span></p>
-        <table class="metric">
-          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:53%"></i><i class="before" style="width:46%"></i></div></td><td class="val">46% → 53%<b>+7%p</b></td></tr>
-          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:69%"></i><i class="before" style="width:55%"></i></div></td><td class="val">55% → 69%<b>+14%p</b></td></tr>
-          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:93%"></i><i class="before" style="width:86%"></i></div></td><td class="val">86% → 93%<b>+7%p</b></td></tr>
-          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:50%"></i><i class="before" style="width:31%"></i></div></td><td class="val">31% → 50%<b>+19%p</b></td></tr>
-        </table>
-        <div class="legend"><span class="b">Before</span><span class="a">After</span></div>
-        <ul style="margin-top:12px"><li>두 전략을 교체 가능한 구조로 분리 설계해, 문서 타입별로 파이프라인 재구성 없이 확장 가능</li></ul>
-      </div>
-    </article>
-
-    <article class="feature">
-      <h3><span class="num">3</span>검색 정확도 고도화: Dense 단독 → (Dense + Sparse) BM25 하이브리드</h3>
-      <div class="block">
-        <p class="label">[문제 상황]</p>
-        <ul>
-          <li>밀집(Dense) 임베딩 검색만 쓰면 의미가 유사한 문단은 잘 찾지만, 식별자·API 명세·고유명사처럼 정확한 문자열 일치가 필요한 검색에서는 실패</li>
-          <li>파라미터명이나 에러 코드로 질문했을 때, 해당 문자열이 그대로 적힌 청크 대신 비슷한 주제의 다른 청크가 상위에 올라오는 현상 발생</li>
-        </ul>
-      </div>
-      <div class="block">
-        <p class="label">[해결 과정]</p>
-        <ul>
-          <li>기존 Dense 검색만 쓰던 구조에 BM25를 추가해 하이브리드 검색으로 전환</li>
-          <li>RRF(Reciprocal Rank Fusion)로 Dense, BM25 각각의 검색 결과 순위를 합쳐 최종 순위 산출</li>
-        </ul>
-      </div>
-      <div class="block result">
-        <p class="label">[성과]</p>
-        <p class="metric-title">API 명세서·기술 문서: Dense 단독 → BM25 하이브리드 <span class="hl">(평균 17%p 향상)</span></p>
-        <table class="metric">
-          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:70%"></i><i class="before" style="width:65%"></i></div></td><td class="val">65% → 70%<b>+5%p</b></td></tr>
-          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:80%"></i><i class="before" style="width:53%"></i></div></td><td class="val">53% → 80%<b>+27%p</b></td></tr>
-          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:83%"></i><i class="before" style="width:74%"></i></div></td><td class="val">74% → 83%<b>+9%p</b></td></tr>
-          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:76%"></i><i class="before" style="width:50%"></i></div></td><td class="val">50% → 76%<b>+26%p</b></td></tr>
-        </table>
-        <div class="legend"><span class="b">Before</span><span class="a">After</span></div>
-        <ul style="margin-top:12px"><li>특히 Context Recall이 크게 상승해, 정확한 문자열 일치가 필요한 질의에서 Dense 검색이 놓치던 근거 청크를 BM25가 보완</li></ul>
-      </div>
-    </article>
-
-    <article class="feature">
-      <h3><span class="num">4</span>RAG 성능 검증: 느낌 기반 판단 → RAGAS 정량 수치 평가</h3>
-      <div class="block">
-        <p class="label">[문제 상황]</p>
-        <ul>
-          <li>청킹·검색 전략을 여러 차례 교체하면서도, 각 변경이 실제로 개선인지 답변 몇 개를 눈으로 보고 판단해온 상태 → 개선 여부와 회귀 여부를 객관적으로 확인할 방법 부재</li>
-          <li>기능이 하나씩 늘어날수록 어떤 변경이 실제 성능 향상에 기여했는지 구분이 어려워지는 문제도 존재</li>
-        </ul>
-      </div>
-      <div class="block">
-        <p class="label">[해결 과정]</p>
-        <ul>
-          <li>RAGAS를 도입해 Faithfulness, Answer Relevancy, Context Precision, Context Recall 4개 지표로 파이프라인 품질을 정량 평가</li>
-          <li>평가용 QA 테스트셋은 문서를 로컬 모델에 넘겨 자동 생성하고, 사람이 직접 검수·수정할 수 있도록 구성</li>
-          <li>채점자도 LM Studio 로컬 모델을 그대로 사용</li>
-        </ul>
-      </div>
-      <div class="block result">
-        <p class="label">[성과]</p>
-        <ul>
-          <li>매 기능 변경마다 Before/After RAGAS 점수를 남겨, "느낌상 좋아졌다"가 아니라 변경 하나하나의 효과를 수치로 검증 가능한 구조 확보</li>
-          <li>평가용 QA셋을 로컬 모델이 자동 생성하고 사람이 검수만 하는 구조라, 기능이 추가될 때마다 매번 QA를 새로 수작업하지 않고도 반복 평가 가능</li>
-          <li>채점자 LLM도 로컬 모델을 사용해, 문서·평가 데이터가 외부로 나가지 않는 프로젝트 원칙을 평가 단계까지 유지</li>
-        </ul>
-      </div>
-    </article>
-  </section>
 
   <!-- ================= WORK ================= -->
   <section class="project" id="work">
@@ -540,6 +419,182 @@
         <ul>
           <li>운영 중 서버 재기동·<span class="hl">파드 재시작 대응 건수를 하루에 7~8회에서 0회로 축소</span></li>
           <li>파일 시스템을 거치는 대신 AWS SDK로 S3와 직접 통신하게 하여, 불필요한 통역 과정을 없애고 데이터 접근 효율 개선</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= RAG ================= -->
+  <section class="project" id="rag">
+    <div class="project-head">
+      <span class="tag">Side Project</span>
+      <h2>RAG 검색 품질 개선<br>(문서 유형별 청킹·검색 전략의 정량 비교)</h2>
+      <p class="meta">2026.05 ~ 2026.07 · <a href="https://github.com/Kolin136/Chatbot" target="_blank" rel="noopener">github.com/Kolin136/Chatbot</a></p>
+    </div>
+
+    <div class="overview">
+      <h4>[소개]</h4>
+      <p>PDF 문서를 업로드하면 문서의 구조적 특성에 맞는 (청킹 → 벡터DB 저장 → 검색) 전략 조합을 적용해 답변하는 100% 로컬 RAG 파이프라인</p>
+      <h4>[주 기술 스택]</h4>
+      <ul class="chips">
+        <li>LM Studio</li><li>ChromaDB</li><li>FastAPI</li><li>Docling</li><li>LangChain</li><li>pydantic_ai</li>
+      </ul>
+      <h4>[도입 배경]</h4>
+      <ul>
+        <li>범용 LLM의 특정 도메인 지식 부족 문제와, 외부 API 호출 비용 상황 → LM Studio 기반 로컬 추론으로 문서가 외부로 전송되지 않는 구조를 자력 구축</li>
+        <li>단일 전략(고정 크기 청킹 + 임베딩 검색)으로는 문서 종류에 따라 검색 정확도 편차가 크다는 점을 확인, 문서 형태별로 전략을 조합·선택할 수 있는 구조를 목표로 설계</li>
+      </ul>
+      <h4>[기능 흐름]</h4>
+      <ol>
+        <li>PDF 업로드 → Docling 파싱 (텍스트 / 표 / 이미지 분리)</li>
+        <li>표·이미지는 멀티모달 LLM으로 텍스트 설명문 변환 후 본문 청크에 결합</li>
+        <li>문서 시각 구조 분석 → 청킹 전략 선택 (구조형 → Hybrid / 서술형 → Semantic)</li>
+        <li>청크 결과 임베딩 후 ChromaDB 저장</li>
+        <li>질의 시 하이브리드(Dense + Sparse) 검색 → RRF 순위 융합 → 원본 텍스트로 답변 생성</li>
+      </ol>
+      <figure style="margin-top:18px">
+        <img src="home.png" alt="RAG 챗봇의 PDF 업로드 및 청킹 전략 선택 화면" loading="lazy">
+      </figure>
+    </div>
+
+    <article class="feature">
+      <h3><span class="num">1</span>청킹, 임베딩 시 문서 내 시각 요소(표·이미지) 유실 문제 해결</h3>
+      <div class="block">
+        <p class="label">[문제 상황]</p>
+        <ul><li>문서의 표와 이미지가 포함된 경우 청킹 단계에서 통째로 누락 후 임베딩 대상에서 제외되는 문제 발생</li></ul>
+      </div>
+      <div class="block">
+        <p class="label">[해결 과정]</p>
+        <ul>
+          <li>Docling으로 PDF를 파싱해 텍스트, 표, 이미지 등을 구조적으로 분리하고, 시각 요소를 별도 객체로 추출</li>
+          <li>추출한 시각 요소를 멀티모달 LLM을 통해 텍스트 설명문으로 변환한 뒤, 문서 내 원래 위치에 치환하고 그 상태에서 청킹을 수행하여 주변 본문 문맥과 함께 하나의 검색 단위로 인덱싱</li>
+        </ul>
+      </div>
+      <div class="block result">
+        <p class="label">[성과]</p>
+        <ul>
+          <li>표·다이어그램에만 존재했던 정보가 텍스트 검색 경로로 편입되어, 기존에는 근거 부재로 답변 불가 발생</li>
+          <li>표·이미지에 근거가 있는 질의 기준 RAGAS(RAG 평가 시스템) 4개 지표 전부 향상</li>
+        </ul>
+        <p class="metric-title">RAGAS 지표 <span class="hl">(평균 33%p 향상)</span></p>
+        <table class="metric">
+          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:68%"></i><i class="before" style="width:25%"></i></div></td><td class="val">25% → 68%<b>+43%p</b></td></tr>
+          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:63%"></i><i class="before" style="width:35%"></i></div></td><td class="val">35% → 63%<b>+28%p</b></td></tr>
+          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:82%"></i><i class="before" style="width:51%"></i></div></td><td class="val">51% → 82%<b>+32%p</b></td></tr>
+          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:51%"></i><i class="before" style="width:21%"></i></div></td><td class="val">21% → 51%<b>+30%p</b></td></tr>
+        </table>
+        <div class="legend"><span class="b">Before</span><span class="a">After</span></div>
+      </div>
+    </article>
+
+    <article class="feature">
+      <h3><span class="num">2</span>청킹 전략 고도화: 고정 크기 → 구조 기반 → 의미 기반</h3>
+      <div class="block">
+        <p class="label">[문제 상황]</p>
+        <ul><li>고정 크기 청킹은 토큰 수만 기준으로 자르기 때문에 문단·문장 중간에서 문맥이 단절되고, 질문과 관련된 내용이 두 청크에 걸쳐 쪼개져 검색 정확도가 떨어지는 현상 발생</li></ul>
+      </div>
+      <div class="block">
+        <p class="label">[1차 적용: Docling HybridChunker]</p>
+        <ul>
+          <li>Docling이 제공하는 HybridChunker를 적용해, 헤딩·단락 구조를 그대로 보존한 채 임베딩 모델의 토크나이저 기준 최대 토큰 수에 맞춰 청크를 병합·분할하도록 구성</li>
+          <li>청크 경계를 문서에 이미 존재하는 헤딩·문단 구분선에 맞춰, 문단 중간이 아닌 구조적 경계 지점에서만 청크가 나뉘도록 설계</li>
+        </ul>
+      </div>
+      <div class="block">
+        <p class="label">[한계 인지]</p>
+        <ul><li>헤딩·목차 구조가 없는 논문 같은 자유 서술형 문서는 참조할 경계 정보가 없어, 하이브리드 청킹이 사실상 고정 크기 청킹과 동일하게 동작</li></ul>
+      </div>
+      <div class="block">
+        <p class="label">[2차 적용: LangChain SemanticChunker]</p>
+        <ul>
+          <li>LangChain이 제공하는 SemanticChunker를 적용해, 인접 문장 간 임베딩 유사도가 급격히 떨어지는 지점을 의미 경계로 판단해 자동 분할하도록 설정</li>
+          <li>구조 정보 없이 내용만으로 경계를 찾으므로 서술형 문서에 적용 가능</li>
+        </ul>
+      </div>
+      <div class="block result">
+        <p class="label">[성과]</p>
+        <p class="metric-title">구조형 문서: 고정 크기 → 하이브리드 청킹 <span class="hl">(평균 10%p 향상)</span></p>
+        <table class="metric">
+          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:68%"></i><i class="before" style="width:50%"></i></div></td><td class="val">50% → 68%<b>+18%p</b></td></tr>
+          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:62%"></i><i class="before" style="width:62%"></i></div></td><td class="val">62% → 62%<b>+0%p</b></td></tr>
+          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:82%"></i><i class="before" style="width:70%"></i></div></td><td class="val">70% → 82%<b>+12%p</b></td></tr>
+          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:51%"></i><i class="before" style="width:41%"></i></div></td><td class="val">41% → 51%<b>+10%p</b></td></tr>
+        </table>
+        <p class="metric-title">서술형 문서: 하이브리드 → 시멘틱 청킹 <span class="hl">(평균 11%p 향상)</span></p>
+        <table class="metric">
+          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:53%"></i><i class="before" style="width:46%"></i></div></td><td class="val">46% → 53%<b>+7%p</b></td></tr>
+          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:69%"></i><i class="before" style="width:55%"></i></div></td><td class="val">55% → 69%<b>+14%p</b></td></tr>
+          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:93%"></i><i class="before" style="width:86%"></i></div></td><td class="val">86% → 93%<b>+7%p</b></td></tr>
+          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:50%"></i><i class="before" style="width:31%"></i></div></td><td class="val">31% → 50%<b>+19%p</b></td></tr>
+        </table>
+        <div class="legend"><span class="b">Before</span><span class="a">After</span></div>
+        <ul style="margin-top:12px"><li>두 전략을 교체 가능한 구조로 분리 설계해, 문서 타입별로 파이프라인 재구성 없이 확장 가능</li></ul>
+      </div>
+    </article>
+
+    <article class="feature">
+      <h3><span class="num">3</span>검색 정확도 고도화: Dense 단독 → (Dense + Sparse) BM25 하이브리드</h3>
+      <div class="block">
+        <p class="label">[문제 상황]</p>
+        <ul>
+          <li>밀집(Dense) 임베딩 검색만 쓰면 의미가 유사한 문단은 잘 찾지만, 식별자·API 명세·고유명사처럼 정확한 문자열 일치가 필요한 검색에서는 실패</li>
+          <li>파라미터명이나 에러 코드로 질문했을 때, 해당 문자열이 그대로 적힌 청크 대신 비슷한 주제의 다른 청크가 상위에 올라오는 현상 발생</li>
+        </ul>
+      </div>
+      <div class="block">
+        <p class="label">[해결 과정]</p>
+        <ul>
+          <li>기존 Dense 검색만 쓰던 구조에 BM25를 추가해 하이브리드 검색으로 전환</li>
+          <li>RRF(Reciprocal Rank Fusion)로 Dense, BM25 각각의 검색 결과 순위를 합쳐 최종 순위 산출</li>
+        </ul>
+      </div>
+      <div class="block result">
+        <p class="label">[성과]</p>
+        <p class="metric-title">API 명세서·기술 문서: Dense 단독 → BM25 하이브리드 <span class="hl">(평균 17%p 향상)</span></p>
+        <table class="metric">
+          <tr><td class="name">Faithfulness</td><td class="bar"><div class="track"><i class="after" style="width:70%"></i><i class="before" style="width:65%"></i></div></td><td class="val">65% → 70%<b>+5%p</b></td></tr>
+          <tr><td class="name">Answer Relevancy</td><td class="bar"><div class="track"><i class="after" style="width:80%"></i><i class="before" style="width:53%"></i></div></td><td class="val">53% → 80%<b>+27%p</b></td></tr>
+          <tr><td class="name">Context Precision</td><td class="bar"><div class="track"><i class="after" style="width:83%"></i><i class="before" style="width:74%"></i></div></td><td class="val">74% → 83%<b>+9%p</b></td></tr>
+          <tr><td class="name">Context Recall</td><td class="bar"><div class="track"><i class="after" style="width:76%"></i><i class="before" style="width:50%"></i></div></td><td class="val">50% → 76%<b>+26%p</b></td></tr>
+        </table>
+        <div class="legend"><span class="b">Before</span><span class="a">After</span></div>
+        <ul style="margin-top:12px"><li>특히 Context Recall이 크게 상승해, 정확한 문자열 일치가 필요한 질의에서 Dense 검색이 놓치던 근거 청크를 BM25가 보완</li></ul>
+      </div>
+      <div class="fig-pair">
+        <figure>
+          <img src="dense.png" alt="Dense 단독 검색 결과: 식별자 질의에 근거를 찾지 못함" loading="lazy">
+          <figcaption>Dense 단독 검색</figcaption>
+        </figure>
+        <figure>
+          <img src="hybrid.png" alt="Dense + BM25 하이브리드 검색 결과: 식별자 질의에 정확히 답변" loading="lazy">
+          <figcaption>Dense + BM25 하이브리드 검색</figcaption>
+        </figure>
+      </div>
+    </article>
+
+    <article class="feature">
+      <h3><span class="num">4</span>RAG 성능 검증: 느낌 기반 판단 → RAGAS 정량 수치 평가</h3>
+      <div class="block">
+        <p class="label">[문제 상황]</p>
+        <ul>
+          <li>청킹·검색 전략을 여러 차례 교체하면서도, 각 변경이 실제로 개선인지 답변 몇 개를 눈으로 보고 판단해온 상태 → 개선 여부와 회귀 여부를 객관적으로 확인할 방법 부재</li>
+          <li>기능이 하나씩 늘어날수록 어떤 변경이 실제 성능 향상에 기여했는지 구분이 어려워지는 문제도 존재</li>
+        </ul>
+      </div>
+      <div class="block">
+        <p class="label">[해결 과정]</p>
+        <ul>
+          <li>RAGAS를 도입해 Faithfulness, Answer Relevancy, Context Precision, Context Recall 4개 지표로 파이프라인 품질을 정량 평가</li>
+          <li>평가용 QA 테스트셋은 문서를 로컬 모델에 넘겨 자동 생성하고, 사람이 직접 검수·수정할 수 있도록 구성</li>
+          <li>채점자도 LM Studio 로컬 모델을 그대로 사용</li>
+        </ul>
+      </div>
+      <div class="block result">
+        <p class="label">[성과]</p>
+        <ul>
+          <li>매 기능 변경마다 Before/After RAGAS 점수를 남겨, "느낌상 좋아졌다"가 아니라 변경 하나하나의 효과를 수치로 검증 가능한 구조 확보</li>
+          <li>평가용 QA셋을 로컬 모델이 자동 생성하고 사람이 검수만 하는 구조라, 기능이 추가될 때마다 매번 QA를 새로 수작업하지 않고도 반복 평가 가능</li>
+          <li>채점자 LLM도 로컬 모델을 사용해, 문서·평가 데이터가 외부로 나가지 않는 프로젝트 원칙을 평가 단계까지 유지</li>
         </ul>
       </div>
     </article>
